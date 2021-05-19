@@ -1,0 +1,47 @@
+server:
+  port: 8993
+  servlet:
+    context-path: /personal
+
+spring:
+  application:
+    name: personal
+  profiles:
+    active: dev
+  aop:
+    auto: true
+  session:
+    #设置session存储类型
+    store-type: redis
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 30
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: Hikari
+      max-lifetime: 55000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 65536
+      buffer-memory: 524288
+    consumer:
+      group-id: group_test
+      isolation-level: read_committed
+      auto-offset-reset: latest #无提交的offset时，消费分区最新数据
+      enable-auto-commit: false  #自动提交
+      auto-commit-interval: 5000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  #修改上传的最大文件限制
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+
